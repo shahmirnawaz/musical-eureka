@@ -4,6 +4,9 @@ import { useTRPC } from "@/trpc/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { LoadingState } from "@/components/loading-state";
 import { ErrorState } from "@/components/error-state";
+import { DataTable } from "@/components/data-table";
+import { columns } from "@/modules/meetings/ui/components/columns";
+import { EmptyState } from "@/components/empty-state";
 
 export const MeetingsView = () => {
     const trpc = useTRPC();
@@ -12,8 +15,14 @@ export const MeetingsView = () => {
 
 
     return (
-        <div className="overflow-x-scroll">
-            {/*{JSON.stringify(data)}*/}
+        <div className="flex-1 pb-4 px-4 md:px-8 flex flex-col gap-y-4">
+            <DataTable
+                data={data.items}
+                columns={columns}
+            />
+            {data.items.length === 0 && (
+                <EmptyState title="Create Your First Meeting" description="Create a new meeting to start a conversation with your agent." />
+            )}
         </div>
     );
 };
